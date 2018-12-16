@@ -1,0 +1,57 @@
+demo/
+backend/
+demo-dev/
+_applicatonDCT/
+_resources/
+!.mvn/wrapper/maven-wrapper.jar
+
+.vscode/
+_certificats/
+backend2/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+/.recommenders/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+## node modules ##
+node_modules/
+
+/.metadata/
+*.log
+
+#h2 local data
+back/api/data/*
+
+#sonar local files
+target/sonar
+
+#log folders
+*/logs/
+
+#target folder (except for the one at the root)
+back/*/target
+back/target
+target/
