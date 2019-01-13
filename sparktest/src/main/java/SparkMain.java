@@ -1,8 +1,12 @@
+import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.split;
@@ -46,6 +50,7 @@ public class SparkMain {
 
 
         Dataset<Row> indexes = dsProducts.filter(col("type").equalTo("INDEX"));
+        dsProducts.repartition();
         Dataset<Row> indexComposition = indexes.withColumn("index_underlying", explode(split(indexes.col("elements"), ","))).drop(col("elements"));
         indexes.show();
         indexComposition.show();
@@ -63,5 +68,15 @@ public class SparkMain {
         dealsOnIndexWithIndexDetail.show();
         //.join(indexComposition, indexes.col("id").equalTo(indexComposition.col("index_underlying")));
 //        /dealWithIndexComposition.show();
+
+        Dataset<Integer> toto = dsProducts.flatMap(new FlatMapFunction<Row, Integer>() {
+
+            public Iterator<Integer> call(Row row) throws Exception {
+                return Arrays.asList(row.getString(row.fieldIndex("elements")).split(",")).stream().map(s -> Integer.valueOf(s)).collect(Collectors.<Integer>toList()).iterator();
+            }
+        }, Encoders.INT());
+
+        // ataset<Row> dsProductsInIndex = dsDeals.filter(dsDeals.col("product_id").isin(split(dsProducts.col("elements"), ",")));
+        toto.show();
     }
 }
