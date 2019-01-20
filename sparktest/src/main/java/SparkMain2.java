@@ -26,7 +26,7 @@ public class SparkMain2 {
 
     public static void main(String[] args) {
         Dataset<Row> dsTrades = spark.read().option("header", true)
-                .option("inferSchema", true).option("delimiter", "|").csv("trades_100M.csv").repartition(col(COL_CURRENCY));
+                .option("inferSchema", true).option("delimiter", "|").csv("trades_10000.csv").repartition(col(COL_CURRENCY));
 
         Dataset<Row> dsDelta = dsTrades.filter(col(COL_MEASURE).equalTo(lit(MEASURE_TYPE_DELTA)));
         Dataset<Row> dsCurvature = dsTrades.filter(col(COL_MEASURE).equalTo(lit(MEASURE_TYPE_CURVATURE)));
@@ -39,6 +39,7 @@ public class SparkMain2 {
 
         Dataset<Row> dsCurvatureWithSumDelta = dsCurvature.join(dsSumDelta, col(COL_DELTA_TRADE_ID).equalTo(col(COL_TRADE_ID)).and(col(COL_DELTA_CURRENCY).equalTo(col(COL_CURRENCY))));
 
+        dsSumDelta.show(1000);
         System.out.println(dsSumDelta.count());
         System.out.println(dsCurvatureWithSumDelta.count());
 
