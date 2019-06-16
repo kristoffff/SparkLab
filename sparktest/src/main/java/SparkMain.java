@@ -19,7 +19,10 @@ public class SparkMain {
             .master("local[*]")
             .getOrCreate();
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
+
+        //increment10(100);
+
         Dataset<Row> dsDeals = spark.read().option("header", true)
                 .option("inferSchema", true).option("delimiter", "|").csv("deals.csv");
         Dataset<Row> dsProducts = spark.read().option("header", true)
@@ -78,5 +81,19 @@ public class SparkMain {
 
         // ataset<Row> dsProductsInIndex = dsDeals.filter(dsDeals.col("product_id").isin(split(dsProducts.col("elements"), ",")));
         toto.show();
+
+
+
+    }
+    public static void  main(String[]  args) {
+        int input = 100;
+        for (int i=0;i<10;i++) {
+            increment(input);
+        }
+        System.out.println(input);
+    }
+
+    public static void increment(int input) {
+       input++;
     }
 }
